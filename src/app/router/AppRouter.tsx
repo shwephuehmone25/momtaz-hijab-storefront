@@ -1,2 +1,30 @@
-import { Route,Routes } from 'react-router-dom'; import { StoreLayout } from '@/components/layout/StoreLayout'; import { HomePage } from '@/features/home/pages/HomePage'; import { CatalogPage } from '@/features/products/pages/CatalogPage'; import { ProductDetailPage } from '@/features/products/pages/ProductDetailPage'; import { CartPage } from '@/features/cart/pages/CartPage'; import { WishlistPage } from '@/features/wishlist/pages/WishlistPage'; import { AccountPage } from '@/features/auth/pages/AccountPage'; import { CheckoutPage } from '@/features/checkout/pages/CheckoutPage'; import { ContactPage } from '@/pages/ContactPage'; import { NotFoundPage } from '@/pages/NotFoundPage';
-export function AppRouter(){return <Routes><Route element={<StoreLayout/>}><Route index element={<HomePage/>}/><Route path="new" element={<CatalogPage newOnly/>}/><Route path="shop" element={<CatalogPage/>}/><Route path="shop/:category" element={<CatalogPage/>}/><Route path="product/:slug" element={<ProductDetailPage/>}/><Route path="cart" element={<CartPage/>}/><Route path="wishlist" element={<WishlistPage/>}/><Route path="account" element={<AccountPage/>}/><Route path="checkout" element={<CheckoutPage/>}/><Route path="contact" element={<ContactPage/>}/><Route path="*" element={<NotFoundPage/>}/></Route></Routes>}
+import { Route, Routes } from "react-router-dom";
+import { StoreLayout } from "@/components/layout/StoreLayout";
+import { HomePage } from "@/features/home/pages/HomePage";
+import { CatalogPage } from "@/features/products/pages/CatalogPage";
+import { ProductDetailPage } from "@/features/products/pages/ProductDetailPage";
+import { CartPage } from "@/features/cart/pages/CartPage";
+import { WishlistPage } from "@/features/wishlist/pages/WishlistPage";
+import { AccountPage } from "@/features/auth/pages/AccountPage";
+import { CheckoutPage } from "@/features/checkout/pages/CheckoutPage";
+import { ContactPage } from "@/pages/ContactPage";
+import { NotFoundPage } from "@/pages/NotFoundPage";
+export function AppRouter() {
+  return (
+    <Routes>
+      <Route element={<StoreLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="new" element={<CatalogPage newOnly />} />
+        <Route path="shop" element={<CatalogPage />} />
+        <Route path="shop/:category" element={<CatalogPage />} />
+        <Route path="product/:slug" element={<ProductDetailPage />} />
+        <Route path="cart" element={<CartPage />} />
+        <Route path="wishlist" element={<WishlistPage />} />
+        <Route path="account" element={<AccountPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  );
+}

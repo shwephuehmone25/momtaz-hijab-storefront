@@ -1,16 +1,161 @@
-import type { Category,Product } from '@/features/products/types/product';
-const img=(name:string)=>`/image/${name}`;
-const common=[{id:'charcoal',name:'Charcoal Gray',color:'Charcoal Gray',hex:'#4b4b48',stock:8},{id:'sand',name:'Warm Sand',color:'Warm Sand',hex:'#c9b8a4',stock:12},{id:'rose',name:'Dusty Rose',color:'Dusty Rose',hex:'#b98b85',stock:6}];
-export const products:Product[]=[
-{id:'1',slug:'classic-chiffon-eyelash',name:'Classic Chiffon Eyelash',category:'Hijab',price:29.99,originalPrice:39.99,rating:4.9,reviews:128,image:img('chiffron.jpg'),gallery:[img('chiffron.jpg'),img('hijab_img.jpg'),img('bg.png')],description:'Lightweight chiffon with a soft eyelash edge, designed for graceful drape and easy everyday styling.',featured:true,variants:common},
-{id:'2',slug:'signature-abaya',name:'Signature Flow Abaya',category:'Dresses',price:89.99,rating:4.8,reviews:94,image:img('banner.jpg'),gallery:[img('banner.jpg'),img('Apparel.jpg')],description:'A fluid, elegant silhouette made for effortless layering from day to evening.',featured:true,isNew:true,variants:common},
-{id:'3',slug:'everyday-instant-hijab',name:'Everyday Instant Hijab',category:'Instant Hijab',price:34.99,rating:4.7,reviews:76,image:img('Instant Hijab.jpg'),gallery:[img('Instant Hijab.jpg'),img('hijab_img.jpg')],description:'A polished, slip-on style that makes beautiful dressing feel wonderfully simple.',isNew:true,variants:common},
-{id:'4',slug:'serene-prayer-set',name:'Serene Prayer Set',category:'Prayer Hijab',price:54.99,rating:4.9,reviews:63,image:img('Prayer Hijab.jpg'),gallery:[img('Prayer Hijab.jpg'),img('bg.png')],description:'Soft, breathable coverage created for comfort and calm through every prayer.',featured:true,variants:common},
-{id:'5',slug:'little-star-hijab',name:'Little Star Hijab',category:'Kid Hijab',price:22.99,rating:4.8,reviews:42,image:img('Kids Hijab.jpg'),gallery:[img('Kids Hijab.jpg'),img('Instant Hijab.jpg')],description:'A comfortable, easy-to-wear hijab designed for little ones on the move.',isNew:true,variants:common},
-{id:'6',slug:'soft-layer-cardigan',name:'Soft Layer Cardigan',category:'Apparel',price:64.99,rating:4.6,reviews:51,image:img('Apparel.jpg'),gallery:[img('Apparel.jpg'),img('banner.jpg')],description:'A relaxed longline layer with a refined finish and all-day versatility.',variants:common},
-{id:'7',slug:'pearl-hijab-pin',name:'Pearl Hijab Pin Set',category:'Accessories',price:14.99,rating:4.7,reviews:38,image:img('Untitled design (5).png'),gallery:[img('Untitled design (5).png'),img('momataz.webp')],description:'A delicate finishing touch that secures your style without compromising comfort.',variants:common},
-{id:'8',slug:'pleated-chiffon',name:'Pleated Chiffon',category:'New',price:32.99,rating:4.8,reviews:81,image:img('bg.png'),gallery:[img('bg.png'),img('chiffron.jpg')],description:'Fine pleats bring dimension and lasting elegance to this versatile chiffon scarf.',isNew:true,variants:common}
+import type { Category, Product } from "@/features/products/types/product";
+const img = (name: string) => `/image/${name}`;
+const common = [
+  {
+    id: "charcoal",
+    name: "Charcoal Gray",
+    color: "Charcoal Gray",
+    hex: "#4b4b48",
+    stock: 8,
+  },
+  {
+    id: "sand",
+    name: "Warm Sand",
+    color: "Warm Sand",
+    hex: "#c9b8a4",
+    stock: 12,
+  },
+  {
+    id: "rose",
+    name: "Dusty Rose",
+    color: "Dusty Rose",
+    hex: "#b98b85",
+    stock: 6,
+  },
 ];
-export const getProducts=async():Promise<Product[]>=>products;
-export const getProductBySlug=async(slug:string):Promise<Product|undefined>=>products.find(p=>p.slug===slug);
-export const categories:Category[]=['New','Dresses','Hijab','Instant Hijab','Prayer Hijab','Kid Hijab','Apparel','Accessories'];
+export const products: Product[] = [
+  {
+    id: "1",
+    slug: "classic-chiffon-eyelash",
+    name: "Classic Chiffon Eyelash",
+    category: "Hijab",
+    price: 29.99,
+    originalPrice: 39.99,
+    rating: 4.9,
+    reviews: 128,
+    image: img("chiffron.jpg"),
+    gallery: [img("chiffron.jpg"), img("hijab_img.jpg"), img("bg.png")],
+    description:
+      "Lightweight chiffon with a soft eyelash edge, designed for graceful drape and easy everyday styling.",
+    featured: true,
+    variants: common,
+  },
+  {
+    id: "2",
+    slug: "signature-abaya",
+    name: "Signature Flow Abaya",
+    category: "Dresses",
+    price: 89.99,
+    rating: 4.8,
+    reviews: 94,
+    image: img("banner.jpg"),
+    gallery: [img("banner.jpg"), img("Apparel.jpg")],
+    description:
+      "A fluid, elegant silhouette made for effortless layering from day to evening.",
+    featured: true,
+    isNew: true,
+    variants: common,
+  },
+  {
+    id: "3",
+    slug: "everyday-instant-hijab",
+    name: "Everyday Instant Hijab",
+    category: "Instant Hijab",
+    price: 34.99,
+    rating: 4.7,
+    reviews: 76,
+    image: img("Instant Hijab.jpg"),
+    gallery: [img("Instant Hijab.jpg"), img("hijab_img.jpg")],
+    description:
+      "A polished, slip-on style that makes beautiful dressing feel wonderfully simple.",
+    isNew: true,
+    variants: common,
+  },
+  {
+    id: "4",
+    slug: "serene-prayer-set",
+    name: "Serene Prayer Set",
+    category: "Prayer Hijab",
+    price: 54.99,
+    rating: 4.9,
+    reviews: 63,
+    image: img("Prayer Hijab.jpg"),
+    gallery: [img("Prayer Hijab.jpg"), img("bg.png")],
+    description:
+      "Soft, breathable coverage created for comfort and calm through every prayer.",
+    featured: true,
+    variants: common,
+  },
+  {
+    id: "5",
+    slug: "little-star-hijab",
+    name: "Little Star Hijab",
+    category: "Kid Hijab",
+    price: 22.99,
+    rating: 4.8,
+    reviews: 42,
+    image: img("Kids Hijab.jpg"),
+    gallery: [img("Kids Hijab.jpg"), img("Instant Hijab.jpg")],
+    description:
+      "A comfortable, easy-to-wear hijab designed for little ones on the move.",
+    isNew: true,
+    variants: common,
+  },
+  {
+    id: "6",
+    slug: "soft-layer-cardigan",
+    name: "Soft Layer Cardigan",
+    category: "Apparel",
+    price: 64.99,
+    rating: 4.6,
+    reviews: 51,
+    image: img("Apparel.jpg"),
+    gallery: [img("Apparel.jpg"), img("banner.jpg")],
+    description:
+      "A relaxed longline layer with a refined finish and all-day versatility.",
+    variants: common,
+  },
+  {
+    id: "7",
+    slug: "pearl-hijab-pin",
+    name: "Pearl Hijab Pin Set",
+    category: "Accessories",
+    price: 14.99,
+    rating: 4.7,
+    reviews: 38,
+    image: img("Untitled design (5).png"),
+    gallery: [img("Untitled design (5).png"), img("momataz.webp")],
+    description:
+      "A delicate finishing touch that secures your style without compromising comfort.",
+    variants: common,
+  },
+  {
+    id: "8",
+    slug: "pleated-chiffon",
+    name: "Pleated Chiffon",
+    category: "New",
+    price: 32.99,
+    rating: 4.8,
+    reviews: 81,
+    image: img("bg.png"),
+    gallery: [img("bg.png"), img("chiffron.jpg")],
+    description:
+      "Fine pleats bring dimension and lasting elegance to this versatile chiffon scarf.",
+    isNew: true,
+    variants: common,
+  },
+];
+export const getProducts = async (): Promise<Product[]> => products;
+export const getProductBySlug = async (
+  slug: string,
+): Promise<Product | undefined> => products.find((p) => p.slug === slug);
+export const categories: Category[] = [
+  "New",
+  "Dresses",
+  "Hijab",
+  "Instant Hijab",
+  "Prayer Hijab",
+  "Kid Hijab",
+  "Apparel",
+  "Accessories",
+];

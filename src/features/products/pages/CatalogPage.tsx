@@ -1,3 +1,90 @@
-import { Search,SlidersHorizontal } from 'lucide-react'; import { useMemo,useState } from 'react'; import { useLocation,useParams } from 'react-router-dom'; import { ProductCard } from '@/features/products/components/ProductCard'; import { products } from '@/features/products/services/product-service';
-const labels:Record<string,string>={'instant-hijab':'Instant Hijab','prayer-hijab':'Prayer Hijab','kid-hijab':'Kid Hijab'};
-export function CatalogPage({newOnly=false}:{newOnly?:boolean}){const {category}=useParams();const loc=useLocation();const query=new URLSearchParams(loc.search).get('q')??'';const [sort,setSort]=useState('featured');const [term,setTerm]=useState(query);const title=newOnly?'New Arrivals':category?(labels[category]??category[0].toUpperCase()+category.slice(1)):'Shop All';const items=useMemo(()=>{const x=products.filter(p=>(!newOnly||p.isNew)&&(!category||p.category.toLowerCase().replaceAll(' ','-')===category)&&(!term||`${p.name} ${p.category}`.toLowerCase().includes(term.toLowerCase())));return [...x].sort((a,b)=>sort==='low'?a.price-b.price:sort==='high'?b.price-a.price:Number(b.featured)-Number(a.featured))},[category,newOnly,sort,term]);return <section className="catalog container page-space"><div className="page-intro"><span>THE MOMATAZ COLLECTION</span><h1>{title}</h1><p>Beautifully considered pieces for comfort, confidence, and everyday grace.</p></div><div className="catalog-tools"><label className="catalog-search"><Search size={17}/><span className="sr-only">Filter products</span><input value={term} onChange={e=>setTerm(e.target.value)} placeholder="Search this collection"/></label><label className="sort"><SlidersHorizontal size={17}/><span className="sr-only">Sort products</span><select value={sort} onChange={e=>setSort(e.target.value)}><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label></div><p className="result-count">{items.length} {items.length===1?'style':'styles'}</p>{items.length?<div className="product-grid">{items.map(p=><ProductCard key={p.id} product={p}/>)}</div>:<div className="empty"><Search/><h2>No pieces found</h2><p>Try a different search term or explore another collection.</p><button className="button" onClick={()=>setTerm('')}>Clear search</button></div>}</section>}
+import { Search, SlidersHorizontal } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { ProductCard } from "@/features/products/components/ProductCard";
+import { products } from "@/features/products/services/product-service";
+const labels: Record<string, string> = {
+  "instant-hijab": "Instant Hijab",
+  "prayer-hijab": "Prayer Hijab",
+  "kid-hijab": "Kid Hijab",
+};
+export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
+  const { category } = useParams();
+  const loc = useLocation();
+  const query = new URLSearchParams(loc.search).get("q") ?? "";
+  const [sort, setSort] = useState("featured");
+  const [term, setTerm] = useState(query);
+  const title = newOnly
+    ? "New Arrivals"
+    : category
+      ? (labels[category] ?? category[0].toUpperCase() + category.slice(1))
+      : "Shop All";
+  const items = useMemo(() => {
+    const x = products.filter(
+      (p) =>
+        (!newOnly || p.isNew) &&
+        (!category ||
+          p.category.toLowerCase().replaceAll(" ", "-") === category) &&
+        (!term ||
+          `${p.name} ${p.category}`.toLowerCase().includes(term.toLowerCase())),
+    );
+    return [...x].sort((a, b) =>
+      sort === "low"
+        ? a.price - b.price
+        : sort === "high"
+          ? b.price - a.price
+          : Number(b.featured) - Number(a.featured),
+    );
+  }, [category, newOnly, sort, term]);
+  return (
+    <section className="catalog container page-space">
+      <div className="page-intro">
+        <span>THE MOMATAZ COLLECTION</span>
+        <h1>{title}</h1>
+        <p>
+          Beautifully considered pieces for comfort, confidence, and everyday
+          grace.
+        </p>
+      </div>
+      <div className="catalog-tools">
+        <label className="catalog-search">
+          <Search size={17} />
+          <span className="sr-only">Filter products</span>
+          <input
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+            placeholder="Search this collection"
+          />
+        </label>
+        <label className="sort">
+          <SlidersHorizontal size={17} />
+          <span className="sr-only">Sort products</span>
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="featured">Featured</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+          </select>
+        </label>
+      </div>
+      <p className="result-count">
+        {items.length} {items.length === 1 ? "style" : "styles"}
+      </p>
+      {items.length ? (
+        <div className="product-grid">
+          {items.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      ) : (
+        <div className="empty">
+          <Search />
+          <h2>No pieces found</h2>
+          <p>Try a different search term or explore another collection.</p>
+          <button className="button" onClick={() => setTerm("")}>
+            Clear search
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}

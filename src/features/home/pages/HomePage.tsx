@@ -1,3 +1,152 @@
-import { ArrowRight,RotateCcw,ShieldCheck,Sparkles,Truck } from 'lucide-react'; import { Link } from 'react-router-dom'; import { ProductCard } from '@/features/products/components/ProductCard'; import { products } from '@/features/products/services/product-service';
-const cats=[['Dresses','banner.jpg'],['Hijab','hijab_img.jpg'],['Instant Hijab','Instant Hijab.jpg'],['Prayer Hijab','Prayer Hijab.jpg'],['Kid Hijab','Kids Hijab.jpg'],['Apparel','Apparel.jpg']];
-export function HomePage(){return <><section className="hero"><img src="/image/hero.jpg" alt="Momataz modest fashion collection"/><div className="hero-shade"/><div className="hero-copy container"><span>MODESTY, BEAUTIFULLY YOURS</span><h1>Grace in every<br/><em>detail.</em></h1><p>Timeless hijabs and effortless layers, created to move beautifully with your life.</p><Link className="button light" to="/new">Explore new arrivals <ArrowRight/></Link></div></section><section className="benefits container"><div><Truck/><span><b>Free shipping</b>Orders over $50</span></div><div><RotateCcw/><span><b>Easy returns</b>30-day window</span></div><div><ShieldCheck/><span><b>Secure checkout</b>Protected experience</span></div><div><Sparkles/><span><b>Thoughtful quality</b>Made to be loved</span></div></section><section className="container section"><div className="section-heading"><div><span>DISCOVER YOUR STYLE</span><h2>Shop by collection</h2></div><Link to="/shop">View all <ArrowRight/></Link></div><div className="category-grid">{cats.map(([name,image])=><Link key={name} to={`/shop/${name.toLowerCase().replaceAll(' ','-')}`} className="category-card"><img src={`/image/${image}`} alt=""/><span>{name}<ArrowRight/></span></Link>)}</div></section><section className="feature-banner"><img src="/image/promationimg.jpg" alt="Woman styling a Momataz hijab"/><div><span>THE SPRING EDIT</span><h2>Soft shades.<br/>Striking presence.</h2><p>Discover light layers and refined textures for a new season.</p><Link className="button" to="/new">Shop the edit <ArrowRight/></Link></div></section><section className="container section"><div className="section-heading"><div><span>LOVED BY YOU</span><h2>Our signature pieces</h2></div><Link to="/shop">Shop all <ArrowRight/></Link></div><div className="product-grid home-products">{products.filter(p=>p.featured).map(p=><ProductCard key={p.id} product={p}/>)}</div></section><section className="newsletter"><div><span>A LITTLE SOMETHING FOR YOU</span><h2>Enjoy 10% off your first order</h2><p>Join our list for new arrivals, styling notes, and private offers.</p><form onSubmit={e=>e.preventDefault()}><label className="sr-only" htmlFor="newsletter">Email address</label><input id="newsletter" type="email" required placeholder="Your email address"/><button className="button">Join the list</button></form></div></section></>}
+import {
+  ArrowRight,
+  RotateCcw,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { ProductCard } from "@/features/products/components/ProductCard";
+import { products } from "@/features/products/services/product-service";
+const cats = [
+  ["Dresses", "banner.jpg"],
+  ["Hijab", "hijab_img.jpg"],
+  ["Instant Hijab", "Instant Hijab.jpg"],
+  ["Prayer Hijab", "Prayer Hijab.jpg"],
+  ["Kid Hijab", "Kids Hijab.jpg"],
+  ["Apparel", "Apparel.jpg"],
+];
+export function HomePage() {
+  return (
+    <>
+      <section className="hero">
+        <img src="/image/hero.jpg" alt="Momataz modest fashion collection" />
+        <div className="hero-shade" />
+        <div className="hero-copy container">
+          <span>MODESTY, BEAUTIFULLY YOURS</span>
+          <h1>
+            Grace in every
+            <br />
+            <em>detail.</em>
+          </h1>
+          <p>
+            Timeless hijabs and effortless layers, created to move beautifully
+            with your life.
+          </p>
+          <Link className="button light" to="/new">
+            Explore new arrivals <ArrowRight />
+          </Link>
+        </div>
+      </section>
+      <section className="benefits container">
+        <div>
+          <Truck />
+          <span>
+            <b>Free shipping</b>Orders over $50
+          </span>
+        </div>
+        <div>
+          <RotateCcw />
+          <span>
+            <b>Easy returns</b>30-day window
+          </span>
+        </div>
+        <div>
+          <ShieldCheck />
+          <span>
+            <b>Secure checkout</b>Protected experience
+          </span>
+        </div>
+        <div>
+          <Sparkles />
+          <span>
+            <b>Thoughtful quality</b>Made to be loved
+          </span>
+        </div>
+      </section>
+      <section className="container section">
+        <div className="section-heading">
+          <div>
+            <span>DISCOVER YOUR STYLE</span>
+            <h2>Shop by collection</h2>
+          </div>
+          <Link to="/shop">
+            View all <ArrowRight />
+          </Link>
+        </div>
+        <div className="category-grid">
+          {cats.map(([name, image]) => (
+            <Link
+              key={name}
+              to={`/shop/${name.toLowerCase().replaceAll(" ", "-")}`}
+              className="category-card"
+            >
+              <img src={`/image/${image}`} alt="" />
+              <span>
+                {name}
+                <ArrowRight />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className="feature-banner">
+        <img
+          src="/image/promationimg.jpg"
+          alt="Woman styling a Momataz hijab"
+        />
+        <div>
+          <span>THE SPRING EDIT</span>
+          <h2>
+            Soft shades.
+            <br />
+            Striking presence.
+          </h2>
+          <p>Discover light layers and refined textures for a new season.</p>
+          <Link className="button" to="/new">
+            Shop the edit <ArrowRight />
+          </Link>
+        </div>
+      </section>
+      <section className="container section">
+        <div className="section-heading">
+          <div>
+            <span>LOVED BY YOU</span>
+            <h2>Our signature pieces</h2>
+          </div>
+          <Link to="/shop">
+            Shop all <ArrowRight />
+          </Link>
+        </div>
+        <div className="product-grid home-products">
+          {products
+            .filter((p) => p.featured)
+            .map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+        </div>
+      </section>
+      <section className="newsletter">
+        <div>
+          <span>A LITTLE SOMETHING FOR YOU</span>
+          <h2>Enjoy 10% off your first order</h2>
+          <p>
+            Join our list for new arrivals, styling notes, and private offers.
+          </p>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <label className="sr-only" htmlFor="newsletter">
+              Email address
+            </label>
+            <input
+              id="newsletter"
+              type="email"
+              required
+              placeholder="Your email address"
+            />
+            <button className="button">Join the list</button>
+          </form>
+        </div>
+      </section>
+    </>
+  );
+}

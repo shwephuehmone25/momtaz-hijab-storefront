@@ -1,2 +1,121 @@
-import { Heart,Menu,Search,ShoppingBag,UserRound,X } from 'lucide-react'; import { useState } from 'react'; import { Link,NavLink,useNavigate } from 'react-router-dom'; import { categories } from '@/features/products/services/product-service'; import { useShopStore } from '@/stores/shop-store';
-export function Header(){const [open,setOpen]=useState(false);const [search,setSearch]=useState('');const nav=useNavigate();const cart=useShopStore(s=>s.cart.reduce((n,i)=>n+i.quantity,0));const wishes=useShopStore(s=>s.wishlist.length);const submit=(e:React.FormEvent)=>{e.preventDefault();if(search.trim())nav(`/shop?q=${encodeURIComponent(search.trim())}`)};return <><div className="announcement">Complimentary US shipping on orders over $50</div><header className="header"><div className="header-main container"><button className="icon-button mobile-only" aria-label="Open menu" onClick={()=>setOpen(true)}><Menu/></button><Link to="/" className="brand"><img src="/image/momataz.webp" alt="Momataz"/><span>MOMATAZ</span></Link><form className="search" onSubmit={submit}><Search size={18}/><input value={search} onChange={e=>setSearch(e.target.value)} aria-label="Search products" placeholder="Search our collection"/></form><div className="header-actions"><Link to="/account" aria-label="Account"><UserRound/></Link><Link to="/wishlist" aria-label={`Wishlist, ${wishes} items`}><Heart/><em>{wishes}</em></Link><Link to="/cart" aria-label={`Cart, ${cart} items`}><ShoppingBag/><em>{cart}</em></Link></div></div><nav className="desktop-nav" aria-label="Main navigation"><NavLink to="/">Home</NavLink>{categories.map(c=><NavLink key={c} to={c==='New'?'/new':`/shop/${c.toLowerCase().replaceAll(' ','-')}`}>{c}</NavLink>)}<NavLink to="/contact">Contact</NavLink></nav></header><div className={`mobile-drawer ${open?'is-open':''}`} aria-hidden={!open}><button className="icon-button close" onClick={()=>setOpen(false)} aria-label="Close menu"><X/></button><Link to="/" onClick={()=>setOpen(false)} className="brand drawer-brand">MOMATAZ</Link><nav>{['Home',...categories,'Contact'].map(x=><NavLink key={x} onClick={()=>setOpen(false)} to={x==='Home'?'/':x==='Contact'?'/contact':x==='New'?'/new':`/shop/${x.toLowerCase().replaceAll(' ','-')}`}>{x}</NavLink>)}</nav></div>{open&&<button className="scrim" aria-label="Close menu" onClick={()=>setOpen(false)}/>}</>}
+import { Heart, Menu, Search, ShoppingBag, UserRound, X } from "lucide-react";
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { categories } from "@/features/products/services/product-service";
+import { useShopStore } from "@/stores/shop-store";
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const nav = useNavigate();
+  const cart = useShopStore((s) => s.cart.reduce((n, i) => n + i.quantity, 0));
+  const wishes = useShopStore((s) => s.wishlist.length);
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (search.trim()) nav(`/shop?q=${encodeURIComponent(search.trim())}`);
+  };
+  return (
+    <>
+      <div className="announcement">
+        Complimentary US shipping on orders over $50
+      </div>
+      <header className="header">
+        <div className="header-main container">
+          <button
+            className="icon-button mobile-only"
+            aria-label="Open menu"
+            onClick={() => setOpen(true)}
+          >
+            <Menu />
+          </button>
+          <Link to="/" className="brand">
+            <img src="/image/momataz.webp" alt="Momataz" />
+            <span>MOMATAZ</span>
+          </Link>
+          <form className="search" onSubmit={submit}>
+            <Search size={18} />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search products"
+              placeholder="Search our collection"
+            />
+          </form>
+          <div className="header-actions">
+            <Link to="/account" aria-label="Account">
+              <UserRound />
+            </Link>
+            <Link to="/wishlist" aria-label={`Wishlist, ${wishes} items`}>
+              <Heart />
+              <em>{wishes}</em>
+            </Link>
+            <Link to="/cart" aria-label={`Cart, ${cart} items`}>
+              <ShoppingBag />
+              <em>{cart}</em>
+            </Link>
+          </div>
+        </div>
+        <nav className="desktop-nav" aria-label="Main navigation">
+          <NavLink to="/">Home</NavLink>
+          {categories.map((c) => (
+            <NavLink
+              key={c}
+              to={
+                c === "New"
+                  ? "/new"
+                  : `/shop/${c.toLowerCase().replaceAll(" ", "-")}`
+              }
+            >
+              {c}
+            </NavLink>
+          ))}
+          <NavLink to="/contact">Contact</NavLink>
+        </nav>
+      </header>
+      <div
+        className={`mobile-drawer ${open ? "is-open" : ""}`}
+        aria-hidden={!open}
+      >
+        <button
+          className="icon-button close"
+          onClick={() => setOpen(false)}
+          aria-label="Close menu"
+        >
+          <X />
+        </button>
+        <Link
+          to="/"
+          onClick={() => setOpen(false)}
+          className="brand drawer-brand"
+        >
+          MOMATAZ
+        </Link>
+        <nav>
+          {["Home", ...categories, "Contact"].map((x) => (
+            <NavLink
+              key={x}
+              onClick={() => setOpen(false)}
+              to={
+                x === "Home"
+                  ? "/"
+                  : x === "Contact"
+                    ? "/contact"
+                    : x === "New"
+                      ? "/new"
+                      : `/shop/${x.toLowerCase().replaceAll(" ", "-")}`
+              }
+            >
+              {x}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+      {open && (
+        <button
+          className="scrim"
+          aria-label="Close menu"
+          onClick={() => setOpen(false)}
+        />
+      )}
+    </>
+  );
+}

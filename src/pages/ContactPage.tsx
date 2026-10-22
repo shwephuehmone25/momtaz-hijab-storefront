@@ -1,3 +1,102 @@
-import { zodResolver } from '@hookform/resolvers/zod'; import { Mail,MapPin,Phone } from 'lucide-react'; import { useState } from 'react'; import { useForm } from 'react-hook-form'; import { z } from 'zod'; import { Button } from '@/components/ui/Button';
-const schema=z.object({firstName:z.string().min(2,'Required'),lastName:z.string().min(2,'Required'),email:z.email('Enter a valid email'),phone:z.string().optional(),subject:z.string().min(2,'Choose a subject'),message:z.string().min(10,'Please add a little more detail')});type Data=z.infer<typeof schema>;
-export function ContactPage(){const [sent,setSent]=useState(false);const {register,handleSubmit,formState:{errors}}=useForm<Data>({resolver:zodResolver(schema)});return <section className="container page-space contact"><div className="page-intro"><span>WE’D LOVE TO HEAR FROM YOU</span><h1>Let’s talk</h1><p>Questions about styling, sizing, or your order? Our team is here to help.</p></div><div className="contact-grid"><aside><h2>Contact details</h2><p><MapPin/>51–60 Van Kleeck Street<br/>Elmhurst, NY 11373</p><p><Mail/><a href="mailto:momtazhijab@gmail.com">momtazhijab@gmail.com</a></p><p><Phone/><a href="tel:7189262773">718-926-2773</a><br/><small>Monday–Friday, 9am–6pm</small></p></aside><div>{sent?<div className="success"><h2>Message prepared</h2><p>This demo does not send data yet, but your form passed validation successfully.</p><Button onClick={()=>setSent(false)}>Send another</Button></div>:<form className="form-grid" onSubmit={handleSubmit(()=>setSent(true))}>{[['firstName','First name'],['lastName','Last name'],['email','Email address'],['phone','Phone number'],['subject','Subject']].map(([id,label])=><label key={id} className={id==='subject'?'span-2':''}>{label}<input {...register(id as keyof Data)}/>{errors[id as keyof Data]&&<small className="error">{errors[id as keyof Data]?.message}</small>}</label>)}<label className="span-2">Message<textarea rows={6} {...register('message')}/>{errors.message&&<small className="error">{errors.message.message}</small>}</label><Button className="span-2">Send message</Button><small className="span-2 demo-note">Demo only — this message will not be transmitted.</small></form>}</div></div></section>}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/Button";
+const schema = z.object({
+  firstName: z.string().min(2, "Required"),
+  lastName: z.string().min(2, "Required"),
+  email: z.email("Enter a valid email"),
+  phone: z.string().optional(),
+  subject: z.string().min(2, "Choose a subject"),
+  message: z.string().min(10, "Please add a little more detail"),
+});
+type Data = z.infer<typeof schema>;
+export function ContactPage() {
+  const [sent, setSent] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Data>({ resolver: zodResolver(schema) });
+  return (
+    <section className="container page-space contact">
+      <div className="page-intro">
+        <span>WE’D LOVE TO HEAR FROM YOU</span>
+        <h1>Let’s talk</h1>
+        <p>
+          Questions about styling, sizing, or your order? Our team is here to
+          help.
+        </p>
+      </div>
+      <div className="contact-grid">
+        <aside>
+          <h2>Contact details</h2>
+          <p>
+            <MapPin />
+            51–60 Van Kleeck Street
+            <br />
+            Elmhurst, NY 11373
+          </p>
+          <p>
+            <Mail />
+            <a href="mailto:momtazhijab@gmail.com">momtazhijab@gmail.com</a>
+          </p>
+          <p>
+            <Phone />
+            <a href="tel:7189262773">718-926-2773</a>
+            <br />
+            <small>Monday–Friday, 9am–6pm</small>
+          </p>
+        </aside>
+        <div>
+          {sent ? (
+            <div className="success">
+              <h2>Message prepared</h2>
+              <p>
+                This demo does not send data yet, but your form passed
+                validation successfully.
+              </p>
+              <Button onClick={() => setSent(false)}>Send another</Button>
+            </div>
+          ) : (
+            <form
+              className="form-grid"
+              onSubmit={handleSubmit(() => setSent(true))}
+            >
+              {[
+                ["firstName", "First name"],
+                ["lastName", "Last name"],
+                ["email", "Email address"],
+                ["phone", "Phone number"],
+                ["subject", "Subject"],
+              ].map(([id, label]) => (
+                <label key={id} className={id === "subject" ? "span-2" : ""}>
+                  {label}
+                  <input {...register(id as keyof Data)} />
+                  {errors[id as keyof Data] && (
+                    <small className="error">
+                      {errors[id as keyof Data]?.message}
+                    </small>
+                  )}
+                </label>
+              ))}
+              <label className="span-2">
+                Message
+                <textarea rows={6} {...register("message")} />
+                {errors.message && (
+                  <small className="error">{errors.message.message}</small>
+                )}
+              </label>
+              <Button className="span-2">Send message</Button>
+              <small className="span-2 demo-note">
+                Demo only — this message will not be transmitted.
+              </small>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
