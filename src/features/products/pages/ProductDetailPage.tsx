@@ -1,18 +1,50 @@
-import { Check, Heart, Minus, Plus, ShieldCheck, Truck } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  Heart,
+  LoaderCircle,
+  Minus,
+  Plus,
+  ShieldCheck,
+  Truck,
+} from "lucide-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
-import { products } from "../services/product-service";
+import { useProduct, useProducts } from "../hooks/use-products";
 import { useShopStore } from "@/stores/shop-store";
 export function ProductDetailPage() {
   const { slug } = useParams();
-  const p = products.find((x) => x.slug === slug);
-  const [photo, setPhoto] = useState(p?.image ?? "");
-  const [variant, setVariant] = useState(p?.variants[0].id ?? "");
-  const [qty, setQty] = useState(1);
+  const productId = slug && /^\d+$/.test(slug) ? Number(slug) : undefined;
+  const { product: p, loading, error, retry } = useProduct(productId);
+  const { products: relatedProducts } = useProducts();
+  const [selection, setSelection] = useState({
+    productId: "",
+    photo: "",
+    variant: "",
+    qty: 1,
+  });
   const add = useShopStore((s) => s.addToCart);
   const toggle = useShopStore((s) => s.toggleWishlist);
   const wished = useShopStore((s) => (p ? s.wishlist.includes(p.id) : false));
+  if (loading)
+    return (
+      <div className="empty page-space" role="status">
+        <LoaderCircle className="loading-spinner" />
+        <h1>Loading product</h1>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="empty page-space" role="alert">
+        <AlertCircle />
+        <h1>We couldn’t load this product</h1>
+        <p>{error}</p>
+        <button className="button" onClick={retry}>
+          Try again
+        </button>
+      </div>
+    );
   if (!p)
     return (
       <div className="empty page-space">
@@ -22,8 +54,17 @@ export function ProductDetailPage() {
         </Link>
       </div>
     );
+  const current =
+    selection.productId === p.id
+      ? selection
+      : {
+          productId: p.id,
+          photo: p.image,
+          variant: p.variants[0]?.id ?? "",
+          qty: 1,
+        };
   const addMany = () => {
-    for (let i = 0; i < qty; i++) add(p, variant);
+    for (let i = 0; i < current.qty; i++) add(p, current.variant);
   };
   return (
     <section className="container page-space">
@@ -36,23 +77,25 @@ export function ProductDetailPage() {
             {p.gallery.map((x) => (
               <button
                 key={x}
-                onClick={() => setPhoto(x)}
-                className={photo === x ? "active" : ""}
+                onClick={() => setSelection({ ...current, photo: x })}
+                className={current.photo === x ? "active" : ""}
               >
                 <img src={x} alt="" />
               </button>
             ))}
           </div>
           <div className="main-photo">
-            <img src={photo} alt={p.name} />
+            <img src={current.photo} alt={p.name} />
           </div>
         </div>
         <div className="details">
           <span className="eyebrow">{p.category}</span>
           <h1>{p.name}</h1>
-          <p className="rating">
-            ★ {p.rating} <span>({p.reviews} reviews)</span>
-          </p>
+          {p.reviews > 0 && (
+            <p className="rating">
+              ★ {p.rating} <span>({p.reviews} reviews)</span>
+            </p>
+          )}
           <p className="detail-price">
             ${p.price.toFixed(2)}{" "}
             {p.originalPrice && <del>${p.originalPrice.toFixed(2)}</del>}
@@ -60,19 +103,20 @@ export function ProductDetailPage() {
           <p className="description">{p.description}</p>
           <fieldset>
             <legend>
-              Color: <b>{p.variants.find((v) => v.id === variant)?.color}</b>
+              Color:{" "}
+              <b>{p.variants.find((v) => v.id === current.variant)?.color}</b>
             </legend>
             <div className="swatches">
               {p.variants.map((v) => (
                 <button
                   key={v.id}
-                  onClick={() => setVariant(v.id)}
-                  className={variant === v.id ? "active" : ""}
+                  onClick={() => setSelection({ ...current, variant: v.id })}
+                  className={current.variant === v.id ? "active" : ""}
                   aria-label={v.color}
                   title={v.color}
                   style={{ background: v.hex }}
                 >
-                  {variant === v.id && <Check />}
+                  {current.variant === v.id && <Check />}
                 </button>
               ))}
             </div>
@@ -80,14 +124,21 @@ export function ProductDetailPage() {
           <div className="buy-row">
             <div className="quantity">
               <button
-                onClick={() => setQty(Math.max(1, qty - 1))}
+                onClick={() =>
+                  setSelection({
+                    ...current,
+                    qty: Math.max(1, current.qty - 1),
+                  })
+                }
                 aria-label="Decrease quantity"
               >
                 <Minus />
               </button>
-              <span>{qty}</span>
+              <span>{current.qty}</span>
               <button
-                onClick={() => setQty(qty + 1)}
+                onClick={() =>
+                  setSelection({ ...current, qty: current.qty + 1 })
+                }
                 aria-label="Increase quantity"
               >
                 <Plus />
@@ -118,7 +169,7 @@ export function ProductDetailPage() {
         <h2>You may also love</h2>
       </div>
       <div className="product-grid home-products">
-        {products
+        {relatedProducts
           .filter((x) => x.id !== p.id)
           .slice(0, 4)
           .map((x) => (

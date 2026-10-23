@@ -1,14 +1,21 @@
-import { Search, SlidersHorizontal } from "lucide-react";
+import {
+  AlertCircle,
+  LoaderCircle,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { ProductCard } from "@/features/products/components/ProductCard";
-import { products } from "@/features/products/services/product-service";
+import { useProducts } from "@/features/products/hooks/use-products";
+import { categorySlug } from "@/features/products/services/product-service";
 const labels: Record<string, string> = {
   "instant-hijab": "Instant Hijab",
   "prayer-hijab": "Prayer Hijab",
   "kid-hijab": "Kid Hijab",
 };
 export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
+  const { products, loading, error, retry } = useProducts();
   const { category } = useParams();
   const loc = useLocation();
   const query = new URLSearchParams(loc.search).get("q") ?? "";
@@ -22,9 +29,8 @@ export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
   const items = useMemo(() => {
     const x = products.filter(
       (p) =>
-        (!newOnly || p.isNew) &&
-        (!category ||
-          p.category.toLowerCase().replaceAll(" ", "-") === category) &&
+        (!newOnly || products.indexOf(p) < 8) &&
+        (!category || categorySlug(p.category) === category) &&
         (!term ||
           `${p.name} ${p.category}`.toLowerCase().includes(term.toLowerCase())),
     );
@@ -35,7 +41,7 @@ export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
           ? b.price - a.price
           : Number(b.featured) - Number(a.featured),
     );
-  }, [category, newOnly, sort, term]);
+  }, [category, newOnly, products, sort, term]);
   return (
     <section className="catalog container page-space">
       <div className="page-intro">
@@ -66,24 +72,42 @@ export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
           </select>
         </label>
       </div>
-      <p className="result-count">
-        {items.length} {items.length === 1 ? "style" : "styles"}
-      </p>
-      {items.length ? (
-        <div className="product-grid">
-          {items.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+      {loading ? (
+        <div className="empty" role="status">
+          <LoaderCircle className="loading-spinner" />
+          <h2>Loading the collection</h2>
         </div>
-      ) : (
-        <div className="empty">
-          <Search />
-          <h2>No pieces found</h2>
-          <p>Try a different search term or explore another collection.</p>
-          <button className="button" onClick={() => setTerm("")}>
-            Clear search
+      ) : error ? (
+        <div className="empty" role="alert">
+          <AlertCircle />
+          <h2>We couldn’t load the collection</h2>
+          <p>{error}</p>
+          <button className="button" onClick={retry}>
+            Try again
           </button>
         </div>
+      ) : (
+        <>
+          <p className="result-count">
+            {items.length} {items.length === 1 ? "style" : "styles"}
+          </p>
+          {items.length ? (
+            <div className="product-grid">
+              {items.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          ) : (
+            <div className="empty">
+              <Search />
+              <h2>No pieces found</h2>
+              <p>Try a different search term or explore another collection.</p>
+              <button className="button" onClick={() => setTerm("")}>
+                Clear search
+              </button>
+            </div>
+          )}
+        </>
       )}
     </section>
   );

@@ -1,12 +1,4 @@
-export type Category =
-  | "New"
-  | "Dresses"
-  | "Hijab"
-  | "Instant Hijab"
-  | "Prayer Hijab"
-  | "Kid Hijab"
-  | "Apparel"
-  | "Accessories";
+export type Category = string;
 export interface ProductVariant {
   id: string;
   name: string;
@@ -18,6 +10,7 @@ export interface Product {
   id: string;
   slug: string;
   name: string;
+  categoryId: number;
   category: Category;
   price: number;
   originalPrice?: number;
@@ -29,4 +22,51 @@ export interface Product {
   isNew?: boolean;
   featured?: boolean;
   variants: ProductVariant[];
+}
+
+export interface PublicProductImage {
+  id: number;
+  imageUrl: string;
+  sortOrder: number;
+}
+
+export interface PublicProductVariant {
+  id: number;
+  sku: string;
+  color: string | null;
+  style: string | null;
+  size: string | null;
+  price: string;
+  compareAtPrice: string | null;
+  availableQuantity: number;
+  inStock: boolean;
+}
+
+export interface PublicProduct {
+  id: number;
+  categoryId: number;
+  name: string;
+  description: string | null;
+  images: PublicProductImage[];
+  variants: PublicProductVariant[];
+}
+
+export interface PublicProductsResponse {
+  items: PublicProduct[];
+  page: number;
+  limit: number;
+  total: number;
+}
+
+export interface PublicCategory {
+  id: number;
+  parentId: number | null;
+  name: string;
+}
+
+export interface PublicCategoriesResponse {
+  items: PublicCategory[];
+  page: number;
+  limit: number;
+  total: number;
 }

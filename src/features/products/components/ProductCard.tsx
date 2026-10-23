@@ -33,10 +33,12 @@ export function ProductCard({ product }: { product: Product }) {
           {product.originalPrice && (
             <del>${product.originalPrice.toFixed(2)}</del>
           )}
-          <small>
-            <Star size={13} fill="currentColor" />
-            {product.rating}
-          </small>
+          {product.reviews > 0 && (
+            <small>
+              <Star size={13} fill="currentColor" />
+              {product.rating}
+            </small>
+          )}
         </div>
       </div>
     </article>
