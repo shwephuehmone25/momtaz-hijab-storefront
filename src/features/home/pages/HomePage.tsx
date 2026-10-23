@@ -1,152 +1,314 @@
 import {
+  ArrowLeft,
   ArrowRight,
+  Headphones,
+  Instagram,
+  LoaderCircle,
+  PlayCircle,
   RotateCcw,
   ShieldCheck,
-  Sparkles,
   Truck,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ProductCard } from "@/features/products/components/ProductCard";
-import { products } from "@/features/products/services/product-service";
-const cats = [
-  ["Dresses", "banner.jpg"],
-  ["Hijab", "hijab_img.jpg"],
-  ["Instant Hijab", "Instant Hijab.jpg"],
-  ["Prayer Hijab", "Prayer Hijab.jpg"],
-  ["Kid Hijab", "Kids Hijab.jpg"],
-  ["Apparel", "Apparel.jpg"],
+import { useProducts } from "@/features/products/hooks/use-products";
+
+const categories = [
+  ["Dresses", "chiffron.jpg"],
+  ["Hijab", "Instant Hijab.jpg"],
+  ["Instant Hijab", "Prayer Hijab.jpg"],
+  ["Prayer Hijab", "Kids Hijab.jpg"],
+  ["Kid Hijab", "Apparel.jpg"],
+  ["Apparel", "Instant Hijab.jpg"],
+  ["Accessories", "chiffron.jpg"],
+] as const;
+const styleCards = [
+  ["Classic Chiffon", "chiffron.jpg"],
+  ["Chiffon Pleated", "banner.jpg"],
+  ["Cotton Lace", "Prayer Hijab.jpg"],
+  ["Chiffon Crinkle", "Instant Hijab.jpg"],
+] as const;
+const looks = [
+  "Apparel.jpg",
+  "banner.jpg",
+  "chiffron.jpg",
+  "Kids Hijab.jpg",
+  "Instant Hijab.jpg",
+  "Prayer Hijab.jpg",
+] as const;
+const features: Array<{ icon: LucideIcon; title: string; text: string }> = [
+  { icon: Truck, title: "Free Shipping", text: "On orders over $50" },
+  { icon: RotateCcw, title: "Easy Returns", text: "30-day money back" },
+  {
+    icon: ShieldCheck,
+    title: "Secure Payment",
+    text: "100% protected checkout",
+  },
+  { icon: Headphones, title: "24/7 Support", text: "Dedicated support team" },
 ];
+const slug = (name: string) =>
+  `/shop/${name.toLowerCase().replaceAll(" ", "-")}`;
+
 export function HomePage() {
+  const { products, loading, error, retry } = useProducts();
+  const page = useRef<HTMLDivElement>(null);
+  const categoryTrack = useRef<HTMLDivElement>(null);
+  const scrollCategories = (direction: number) =>
+    categoryTrack.current?.scrollBy({
+      left: direction * 360,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+
+  useEffect(() => {
+    const root = page.current;
+    if (!root) return;
+
+    const items = Array.from(
+      root.querySelectorAll<HTMLElement>(
+        "[data-reveal], .home-products > .product-card",
+      ),
+    );
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    items.forEach((item, index) => {
+      item.classList.add("reveal-item");
+      item.style.setProperty("--reveal-delay", `${(index % 4) * 65}ms`);
+      if (reduceMotion) item.classList.add("is-visible");
+    });
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      items.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+
+    root.classList.add("reveal-ready");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -8%", threshold: 0.08 },
+    );
+    items.forEach((item) => observer.observe(item));
+
+    return () => observer.disconnect();
+  }, [loading, products.length]);
+
   return (
-    <>
-      <section className="hero">
-        <img src="/image/hero.jpg" alt="Momataz modest fashion collection" />
-        <div className="hero-shade" />
-        <div className="hero-copy container">
-          <span>MODESTY, BEAUTIFULLY YOURS</span>
-          <h1>
-            Grace in every
-            <br />
-            <em>detail.</em>
-          </h1>
+    <div className="reference-home" ref={page}>
+      <section className="reference-hero">
+        <div className="reference-hero-content" data-reveal>
+          <span>NEW ARRIVAL</span>
+          <h1>Elevate Your Everyday Style</h1>
           <p>
-            Timeless hijabs and effortless layers, created to move beautifully
-            with your life.
+            Discover timeless pieces crafted for comfort, designed for elegance,
+            made for you.
           </p>
-          <Link className="button light" to="/new">
-            Explore new arrivals <ArrowRight />
-          </Link>
+          <div className="reference-hero-actions">
+            <Link className="ref-button ref-button-light" to="/new">
+              Shop Now <ArrowRight />
+            </Link>
+            <a className="ref-button ref-button-outline" href="#shop-the-look">
+              <PlayCircle /> Watch Lookbook
+            </a>
+          </div>
         </div>
       </section>
-      <section className="benefits container">
-        <div>
-          <Truck />
-          <span>
-            <b>Free shipping</b>Orders over $50
-          </span>
+
+      <section
+        className="ref-container feature-strip"
+        aria-label="Store benefits"
+      >
+        {features.map(({ icon: Icon, title, text }) => (
+          <article className="feature-card" data-reveal key={title}>
+            <span className="feature-icon">
+              <Icon />
+            </span>
+            <div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          </article>
+        ))}
+      </section>
+
+      <section className="ref-section ref-container">
+        <div className="ref-centered-heading">
+          <h2>Explore Categories</h2>
+          <p>Find your everyday favorites</p>
         </div>
-        <div>
-          <RotateCcw />
-          <span>
-            <b>Easy returns</b>30-day window
-          </span>
-        </div>
-        <div>
-          <ShieldCheck />
-          <span>
-            <b>Secure checkout</b>Protected experience
-          </span>
-        </div>
-        <div>
-          <Sparkles />
-          <span>
-            <b>Thoughtful quality</b>Made to be loved
-          </span>
+        <div className="category-carousel">
+          <button
+            aria-label="Previous categories"
+            onClick={() => scrollCategories(-1)}
+          >
+            <ArrowLeft />
+          </button>
+          <div className="category-track" ref={categoryTrack}>
+            {categories.map(([name, image]) => (
+              <Link
+                className="round-category"
+                data-reveal
+                to={slug(name)}
+                key={name}
+              >
+                <span>
+                  <img src={`/image/${image}`} alt={name} />
+                </span>
+                {name}
+              </Link>
+            ))}
+          </div>
+          <button
+            aria-label="Next categories"
+            onClick={() => scrollCategories(1)}
+          >
+            <ArrowRight />
+          </button>
         </div>
       </section>
-      <section className="container section">
-        <div className="section-heading">
+
+      <section className="ref-section ref-container">
+        <div className="ref-section-heading">
           <div>
-            <span>DISCOVER YOUR STYLE</span>
-            <h2>Shop by collection</h2>
+            <span>FUTURE GRID</span>
+            <h2>Find Your Perfect Style</h2>
           </div>
           <Link to="/shop">
-            View all <ArrowRight />
+            View All <ArrowRight />
           </Link>
         </div>
-        <div className="category-grid">
-          {cats.map(([name, image]) => (
+        <div className="style-grid">
+          {styleCards.map(([name, image]) => (
             <Link
+              className="style-card"
+              data-reveal
+              to="/shop/hijab"
               key={name}
-              to={`/shop/${name.toLowerCase().replaceAll(" ", "-")}`}
-              className="category-card"
             >
-              <img src={`/image/${image}`} alt="" />
+              <img src={`/image/${image}`} alt={name} />
               <span>
-                {name}
-                <ArrowRight />
+                <strong>{name}</strong>
+                <small>
+                  Explore Now <ArrowRight />
+                </small>
               </span>
             </Link>
           ))}
         </div>
       </section>
-      <section className="feature-banner">
-        <img
-          src="/image/promationimg.jpg"
-          alt="Woman styling a Momataz hijab"
-        />
-        <div>
-          <span>THE SPRING EDIT</span>
-          <h2>
-            Soft shades.
-            <br />
-            Striking presence.
-          </h2>
-          <p>Discover light layers and refined textures for a new season.</p>
-          <Link className="button" to="/new">
-            Shop the edit <ArrowRight />
-          </Link>
-        </div>
-      </section>
-      <section className="container section">
-        <div className="section-heading">
+
+      <section className="ref-section ref-container promo-grid">
+        <article className="promo-card" data-reveal>
           <div>
-            <span>LOVED BY YOU</span>
-            <h2>Our signature pieces</h2>
+            <span>LIMITED TIME OFFER</span>
+            <h2>Spring Sale Up to 50% Off</h2>
+            <Link className="ref-button ref-button-dark" to="/shop">
+              Shop The Sale <ArrowRight />
+            </Link>
+          </div>
+          <img src="/image/promationimg.jpg" alt="Spring sale" />
+        </article>
+        <article className="promo-card" data-reveal>
+          <div>
+            <span>NEW ARRIVALS</span>
+            <h2>Fresh Styles Just Landed</h2>
+            <Link className="ref-button ref-button-dark" to="/new">
+              Explore New In <ArrowRight />
+            </Link>
+          </div>
+          <img src="/image/promotion img1.jpg" alt="Fresh styles" />
+        </article>
+      </section>
+
+      <section className="ref-section ref-container">
+        <div className="ref-section-heading">
+          <div>
+            <span>BEST SELLERS</span>
+            <h2>Our Most Loved Picks</h2>
           </div>
           <Link to="/shop">
-            Shop all <ArrowRight />
+            View All Products <ArrowRight />
           </Link>
         </div>
-        <div className="product-grid home-products">
-          {products
-            .filter((p) => p.featured)
-            .map((p) => (
-              <ProductCard key={p.id} product={p} />
+        {loading ? (
+          <div className="empty">
+            <LoaderCircle className="loading-spinner" />
+            <h2>Loading products</h2>
+          </div>
+        ) : error ? (
+          <div className="empty">
+            <h2>We couldn’t load products</h2>
+            <p>{error}</p>
+            <button className="ref-button ref-button-dark" onClick={retry}>
+              Try again
+            </button>
+          </div>
+        ) : (
+          <div className="product-grid home-products">
+            {products.slice(0, 4).map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
-        </div>
+          </div>
+        )}
       </section>
-      <section className="newsletter">
+
+      <section className="lookbook" id="shop-the-look">
+        <div className="ref-centered-heading">
+          <h2>SHOP THE LOOK</h2>
+        </div>
+        <div className="look-grid">
+          {looks.map((image, index) => (
+            <Link
+              to="/shop"
+              className="look-card"
+              data-reveal
+              key={`${image}-${index}`}
+            >
+              <img src={`/image/${image}`} alt={`Momataz look ${index + 1}`} />
+              <span>
+                <Instagram />
+                SHOP THIS LOOK
+              </span>
+            </Link>
+          ))}
+        </div>
+        <a className="ref-button ref-button-border" href="#site-footer">
+          Follow Us
+        </a>
+      </section>
+
+      <section className="ref-container ref-newsletter" data-reveal>
+        <img src="/image/chiffron.jpg" alt="Momataz chiffon collection" />
         <div>
-          <span>A LITTLE SOMETHING FOR YOU</span>
-          <h2>Enjoy 10% off your first order</h2>
+          <span>GET 10% OFF YOUR FIRST ORDER</span>
+          <h2>Join Our Style List</h2>
           <p>
-            Join our list for new arrivals, styling notes, and private offers.
+            Sign up for exclusive offers, new arrivals, and style inspiration.
           </p>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <label className="sr-only" htmlFor="newsletter">
-              Email address
+          <form onSubmit={(event) => event.preventDefault()}>
+            <label className="sr-only" htmlFor="home-email">
+              Enter your email
             </label>
             <input
-              id="newsletter"
-              type="email"
+              id="home-email"
               required
-              placeholder="Your email address"
+              type="email"
+              placeholder="Enter your email"
             />
-            <button className="button">Join the list</button>
+            <button className="ref-button ref-button-dark">Subscribe</button>
           </form>
         </div>
       </section>
-    </>
+    </div>
   );
 }

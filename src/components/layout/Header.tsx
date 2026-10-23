@@ -3,44 +3,74 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { categories } from "@/features/products/services/product-service";
 import { useShopStore } from "@/stores/shop-store";
+
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const nav = useNavigate();
-  const cart = useShopStore((s) => s.cart.reduce((n, i) => n + i.quantity, 0));
-  const wishes = useShopStore((s) => s.wishlist.length);
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (search.trim()) nav(`/shop?q=${encodeURIComponent(search.trim())}`);
+  const navigate = useNavigate();
+  const cart = useShopStore((state) =>
+    state.cart.reduce((count, item) => count + item.quantity, 0),
+  );
+  const wishes = useShopStore((state) => state.wishlist.length);
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (search.trim()) navigate(`/shop?q=${encodeURIComponent(search.trim())}`);
   };
+
   return (
     <>
-      <div className="announcement">
-        Complimentary US shipping on orders over $50
-      </div>
-      <header className="header">
-        <div className="header-main container">
-          <button
-            className="icon-button mobile-only"
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-          >
-            <Menu />
-          </button>
-          <Link to="/" className="brand">
-            <img src="/image/momataz.webp" alt="Momataz" />
-            <span>MOMATAZ</span>
-          </Link>
-          <form className="search" onSubmit={submit}>
-            <Search size={18} />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="Search products"
-              placeholder="Search our collection"
-            />
-          </form>
+      <div className="announcement">Free Shipping on orders over $50</div>
+      <header className="header reference-header">
+        <div className="reference-nav">
+          <div className="reference-brand-group">
+            <Link to="/" className="brand">
+              <img src="/image/momataz.webp" alt="Momataz" />
+              <span>MOMATAZ</span>
+            </Link>
+            <button
+              className="mobile-menu-trigger"
+              onClick={() => setOpen(true)}
+            >
+              <Menu />
+              <span>Menu</span>
+            </button>
+          </div>
+          <nav className="desktop-nav" aria-label="Main navigation">
+            <NavLink to="/">Home</NavLink>
+            {categories.map((category) => (
+              <NavLink
+                key={category}
+                to={
+                  category === "New"
+                    ? "/new"
+                    : `/shop/${category.toLowerCase().replaceAll(" ", "-")}`
+                }
+              >
+                {category}
+              </NavLink>
+            ))}
+            <NavLink to="/contact">Contact Us</NavLink>
+          </nav>
           <div className="header-actions">
+            <form
+              className={searchOpen ? "nav-search is-open" : "nav-search"}
+              onSubmit={submit}
+            >
+              <input
+                aria-label="Search products"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search products..."
+              />
+              <button
+                type="button"
+                aria-label="Open search"
+                onClick={() => setSearchOpen(!searchOpen)}
+              >
+                <Search />
+              </button>
+            </form>
             <Link to="/account" aria-label="Account">
               <UserRound />
             </Link>
@@ -54,24 +84,8 @@ export function Header() {
             </Link>
           </div>
         </div>
-        <nav className="desktop-nav" aria-label="Main navigation">
-          <NavLink to="/">Home</NavLink>
-          {categories.map((c) => (
-            <NavLink
-              key={c}
-              to={
-                c === "New"
-                  ? "/new"
-                  : `/shop/${c.toLowerCase().replaceAll(" ", "-")}`
-              }
-            >
-              {c}
-            </NavLink>
-          ))}
-          <NavLink to="/contact">Contact</NavLink>
-        </nav>
       </header>
-      <div
+      <aside
         className={`mobile-drawer ${open ? "is-open" : ""}`}
         aria-hidden={!open}
       >
@@ -87,28 +101,41 @@ export function Header() {
           onClick={() => setOpen(false)}
           className="brand drawer-brand"
         >
+          <img src="/image/momataz.webp" alt="" />
           MOMATAZ
         </Link>
+        <form className="drawer-search" onSubmit={submit}>
+          <Search />
+          <input
+            aria-label="Search products"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search products..."
+          />
+        </form>
         <nav>
-          {["Home", ...categories, "Contact"].map((x) => (
+          {["Home", ...categories, "Contact"].map((item) => (
             <NavLink
-              key={x}
+              key={item}
               onClick={() => setOpen(false)}
               to={
-                x === "Home"
+                item === "Home"
                   ? "/"
-                  : x === "Contact"
+                  : item === "Contact"
                     ? "/contact"
-                    : x === "New"
+                    : item === "New"
                       ? "/new"
-                      : `/shop/${x.toLowerCase().replaceAll(" ", "-")}`
+                      : `/shop/${item.toLowerCase().replaceAll(" ", "-")}`
               }
             >
-              {x}
+              {item}
             </NavLink>
           ))}
         </nav>
-      </div>
+        <Link className="drawer-account" to="/account">
+          <UserRound /> User Account
+        </Link>
+      </aside>
       {open && (
         <button
           className="scrim"
