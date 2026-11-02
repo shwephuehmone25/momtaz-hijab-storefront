@@ -140,7 +140,7 @@ export function Footer() {
         </section>
 
         <div className="reference-footer-bottom">
-          <p>© 2026 LUNORA Fashion. All Rights Reserved.</p>
+          <p>© 2026 MOMATAZ. All Rights Reserved.</p>
           <div>
             <a href="#privacy">Privacy Policy</a>
             <a href="#terms">Terms of Service</a>

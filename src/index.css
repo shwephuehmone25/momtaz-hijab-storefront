@@ -227,8 +227,8 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid var(--ink);
-  background: var(--ink);
+  border: 1px solid var(--accent-color);
+  background: var(--accent-color);
   color: white;
   padding: 14px 24px;
   text-transform: uppercase;
@@ -238,8 +238,8 @@ h2 {
   cursor: pointer;
 }
 .button:hover {
-  background: var(--rose);
-  border-color: var(--rose);
+  background: var(--ink);
+  border-color: var(--ink);
 }
 .button.light {
   background: white;
@@ -1260,7 +1260,7 @@ body {
   margin-inline: auto;
 }
 .announcement {
-  background: #111;
+  background: var(--rose);
   padding: 6px 12px;
   font-size: 0.78rem;
   letter-spacing: 0;
@@ -1434,11 +1434,11 @@ body {
   background: #ffffff26;
 }
 .ref-button-dark {
-  background: #111;
+  background: var(--accent-hover);
   color: #fff;
 }
 .ref-button-dark:hover {
-  background: var(--accent-hover);
+  background: #111;
 }
 .ref-button-border {
   border-color: #111;
@@ -1768,7 +1768,7 @@ body {
 }
 
 .reference-footer {
-  background: #212529;
+  background: var(--rose);
   color: #fff;
   padding: 48px 0 24px;
 }
@@ -1806,13 +1806,13 @@ body {
 .reference-footer-brand > p {
   max-width: 270px;
   margin: 0 0 24px;
-  color: #a0a0a0;
+  color: #fff;
   font-size: 0.8rem;
   line-height: 1.55;
 }
 .reference-footer-grid a,
 .reference-footer-contact li {
-  color: #a0a0a0;
+  color: #fff;
   font-size: 0.8rem;
   line-height: 1.5;
 }
@@ -1833,7 +1833,7 @@ body {
   padding: 0;
   border: 1px solid #ffffff26;
   border-radius: 50%;
-  color: #a0a0a0;
+  color: #fff;
 }
 .reference-footer-socials a:hover {
   padding: 0;
@@ -1845,10 +1845,13 @@ body {
 .reference-footer-socials svg {
   width: 16px;
   height: 16px;
+  color: #fff;
+  stroke: #fff;
 }
 .reference-footer-socials strong {
   font-family: Georgia, serif;
   font-size: 17px;
+  color: #fff;
 }
 .reference-footer-contact li {
   display: flex;
@@ -1868,7 +1871,7 @@ body {
 }
 .payment-section > p {
   margin: 0 0 8px;
-  color: #a0a0a0;
+  color: #fff;
   font-size: 0.8rem;
 }
 .payment-badges {
@@ -1944,7 +1947,7 @@ body {
   justify-content: space-between;
   padding-top: 16px;
   border-top: 1px solid #6c757d1a;
-  color: #a0a0a0;
+  color: #fff;
   font-size: 0.74rem;
 }
 .reference-footer-bottom p {
@@ -1955,7 +1958,7 @@ body {
   gap: 16px;
 }
 .reference-footer-bottom a {
-  color: #a0a0a0;
+  color: #fff;
 }
 .reference-footer-bottom a:hover {
   color: var(--accent-color);
@@ -2138,5 +2141,612 @@ body {
   .payment-badges {
     max-width: 340px;
     margin-inline: auto;
+  }
+}
+
+/* New arrivals page — based on the supplied new.html and hijab.css */
+.new-arrivals-page {
+  background: #fff;
+}
+.new-hero-carousel {
+  position: relative;
+  height: 450px;
+  overflow: hidden;
+  background: #eee;
+}
+.new-hero-carousel > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+}
+.new-hero-carousel > img.is-active {
+  opacity: 1;
+}
+.new-breadcrumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+  padding: 22px 26px;
+  color: #fff;
+  font-size: 0.8rem;
+  text-shadow: 0 1px 4px #0008;
+}
+.new-slide-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  width: 48px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  transform: translateY(-50%);
+  cursor: pointer;
+  filter: drop-shadow(0 1px 3px #0008);
+}
+.new-slide-arrow.previous {
+  left: 8px;
+}
+.new-slide-arrow.next {
+  right: 8px;
+}
+.new-slide-arrow svg {
+  width: 28px;
+  height: 28px;
+}
+.new-slide-dots {
+  position: absolute;
+  z-index: 3;
+  bottom: 16px;
+  left: 50%;
+  display: flex;
+  gap: 7px;
+  transform: translateX(-50%);
+}
+.new-slide-dots button {
+  width: 30px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  background: #ffffff80;
+  cursor: pointer;
+}
+.new-slide-dots button.is-active {
+  background: #fff;
+}
+.new-catalog {
+  width: min(100% - 96px, 1500px);
+  margin: auto;
+  padding: 25px 0 45px;
+}
+.new-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dee2e6;
+}
+.new-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.new-toolbar select {
+  min-width: 160px;
+  min-height: 34px;
+  padding: 6px 34px 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 0;
+  background: #fff;
+  color: #212529;
+  font-size: 0.82rem;
+}
+.new-category-select select {
+  min-width: 120px;
+  min-height: 39px;
+  border-color: #6c757d;
+  font-size: 0.9rem;
+}
+.new-catalog-heading {
+  padding: 38px 0 42px;
+  border-bottom: 1px solid #dee2e6;
+  text-align: center;
+}
+.new-catalog-heading > span {
+  display: inline-block;
+  margin-bottom: 9px;
+  padding: 5px 11px;
+  border-radius: 100px;
+  background: #0dcaf0;
+  color: #111;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.new-catalog-heading h1 {
+  margin: 0 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+}
+.new-catalog-heading p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.82rem;
+}
+.new-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding-top: 38px;
+}
+.new-product-card {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 0.125rem 0.45rem #00000013;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.new-product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.65rem 1.4rem #00000017;
+}
+.new-product-image {
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  aspect-ratio: 3 / 4;
+}
+.new-product-image > a:first-child,
+.new-product-image img {
+  width: 100%;
+  height: 100%;
+}
+.new-product-image img {
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.new-product-card:hover .new-product-image img {
+  transform: scale(1.05);
+}
+.new-product-image > span {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: #0dcaf0;
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.new-product-image > button {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  box-shadow: 0 0.125rem 0.4rem #0002;
+  cursor: pointer;
+}
+.new-product-image > button svg {
+  width: 17px;
+}
+.new-product-image > button:hover,
+.new-product-image > button.is-active {
+  background: var(--accent-color);
+  color: #fff;
+}
+.new-product-image > button.is-active svg {
+  fill: currentColor;
+}
+.new-view-details {
+  position: absolute;
+  bottom: 9px;
+  left: 9px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  background: var(--accent-color);
+  color: #fff;
+  font-size: 0.72rem;
+}
+.new-view-details:hover {
+  background: var(--ink);
+}
+.new-view-details svg {
+  width: 14px;
+  height: 14px;
+}
+.new-product-info {
+  padding: 14px 16px 17px;
+  text-align: center;
+}
+.new-product-info p {
+  margin: 0 0 5px;
+  color: #6c757d;
+  font-size: 0.78rem;
+}
+.new-product-info h2 {
+  margin: 0 0 9px;
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 500;
+}
+.new-product-info strong {
+  font-size: 0.9rem;
+}
+.new-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 46px 0 10px;
+}
+.new-pagination button {
+  min-width: 36px;
+  height: 35px;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #111;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.new-pagination button:hover,
+.new-pagination button.is-active {
+  border-color: var(--accent-color);
+  background: var(--accent-color);
+  color: #fff;
+}
+@media (max-width: 767px) {
+  .new-hero-carousel {
+    height: 260px;
+  }
+  .new-catalog {
+    width: calc(100% - 28px);
+  }
+  .new-product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .new-toolbar label > span:not(.sr-only) {
+    display: none;
+  }
+  .new-toolbar select {
+    min-width: 145px;
+  }
+  .new-product-info {
+    padding-inline: 9px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .new-hero-carousel {
+    height: 350px;
+  }
+  .new-catalog {
+    width: calc(100% - 48px);
+  }
+}
+@media (max-width: 375px) {
+  .new-hero-carousel {
+    height: 220px;
+  }
+  .new-toolbar select {
+    min-width: 130px;
+    max-width: 165px;
+  }
+  .new-category-select select {
+    min-width: 105px;
+  }
+  .new-product-info h2 {
+    font-size: 0.82rem;
+  }
+}
+
+/* Hijab collection — based on the supplied hijab.html and hijab.css */
+.hijab-catalog-page {
+  background: #fff;
+}
+.hijab-page-hero {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 5px;
+  background:
+    linear-gradient(#0008, #0008),
+    url("/image/hijab_img.jpg") center/cover no-repeat;
+  color: #fff;
+  text-align: center;
+}
+.hijab-page-hero nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 9px;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+}
+.hijab-page-hero nav a {
+  color: #ffffff80;
+}
+.hijab-page-hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+}
+.hijab-catalog-main {
+  width: min(100% - 96px, 1500px);
+  margin: auto;
+  padding: 25px 0 45px;
+}
+.hijab-sortbar {
+  display: flex;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dee2e6;
+}
+.hijab-sortbar label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.hijab-sortbar select {
+  min-width: 160px;
+  min-height: 34px;
+  padding: 6px 34px 6px 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 0;
+  background: #fff;
+  font-size: 0.78rem;
+}
+.hijab-list-title {
+  margin: 25px 0 22px;
+  font-family: inherit;
+  font-size: 2rem;
+}
+.hijab-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) 3fr;
+  gap: 32px;
+}
+.hijab-sidebar {
+  padding-right: 14px;
+}
+.hijab-sidebar section {
+  margin-bottom: 30px;
+}
+.hijab-sidebar h3 {
+  margin: 0 0 14px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #dee2e6;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.hijab-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.hijab-sidebar nav a {
+  color: #555;
+  font-size: 0.84rem;
+  transition:
+    color 0.2s ease,
+    padding-left 0.2s ease;
+}
+.hijab-sidebar nav a:hover {
+  padding-left: 4px;
+  color: var(--accent-color);
+}
+.hijab-sidebar nav a.is-active {
+  color: var(--accent-color);
+  font-weight: 700;
+}
+.hijab-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.hijab-filter-pills button {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: #f1f1f1;
+  color: #444;
+  font-size: 0.73rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.hijab-filter-pills button:hover,
+.hijab-filter-pills button.is-active {
+  background: var(--accent-color);
+  color: #fff;
+}
+.hijab-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.hijab-product-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+.hijab-product-photo {
+  display: block;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+.hijab-product-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.hijab-product-card:hover .hijab-product-photo img {
+  transform: scale(1.05);
+}
+.hijab-wish {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  opacity: 0;
+  transform: translateX(10px);
+  box-shadow: 0 0.125rem 0.4rem #0002;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.hijab-wish svg {
+  width: 17px;
+}
+.hijab-product-card:hover .hijab-wish,
+.hijab-wish:focus-visible,
+.hijab-wish.is-active {
+  opacity: 1;
+  transform: translateX(0);
+}
+.hijab-wish:hover,
+.hijab-wish.is-active {
+  background: var(--accent-color);
+  color: #fff;
+}
+.hijab-wish.is-active svg {
+  fill: currentColor;
+}
+.hijab-quick-view {
+  position: absolute;
+  z-index: 2;
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  border-radius: 4px;
+  background: #111;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s ease;
+}
+.hijab-quick-view svg {
+  width: 16px;
+}
+.hijab-product-card:hover .hijab-quick-view,
+.hijab-quick-view:focus-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hijab-quick-view:hover {
+  background: var(--accent-color);
+}
+.hijab-product-info {
+  padding: 12px 4px 5px;
+  text-align: center;
+}
+.hijab-product-info h3 {
+  overflow: hidden;
+  margin: 0 0 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hijab-product-info strong {
+  font-size: 0.9rem;
+}
+@media (max-width: 991px) {
+  .hijab-catalog-main {
+    width: calc(100% - 48px);
+  }
+  .hijab-layout {
+    grid-template-columns: minmax(180px, 1fr) 2fr;
+    gap: 24px;
+  }
+  .hijab-product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+@media (max-width: 767px) {
+  .hijab-page-hero {
+    min-height: 180px;
+  }
+  .hijab-catalog-main {
+    width: calc(100% - 28px);
+  }
+  .hijab-sortbar label > span {
+    display: none;
+  }
+  .hijab-layout {
+    display: block;
+  }
+  .hijab-sidebar {
+    display: none;
+  }
+  .hijab-product-grid {
+    gap: 14px;
+  }
+  .hijab-wish {
+    opacity: 1;
+    transform: none;
+  }
+  .hijab-quick-view {
+    opacity: 1;
+    transform: none;
+    right: 9px;
+    bottom: 9px;
+    left: 9px;
   }
 }
