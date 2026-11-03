@@ -28,7 +28,13 @@ function mapProduct(product: PublicProduct): Product {
     hex: colorFor(variant, index),
     stock: variant.availableQuantity,
   }));
-  const gallery = product.gallery.filter(Boolean);
+  const imageGallery = [...product.images]
+    .sort((left, right) => left.sortOrder - right.sortOrder)
+    .map((image) => image.imageUrl)
+    .filter(Boolean);
+  const legacyGallery = product.gallery.filter(Boolean);
+  const gallery = imageGallery.length ? imageGallery : legacyGallery;
+  const primaryImage = gallery[0] ?? product.image ?? FALLBACK_IMAGE;
 
   return {
     id: String(product.id),
@@ -40,8 +46,8 @@ function mapProduct(product: PublicProduct): Product {
     originalPrice: product.originalPrice ?? undefined,
     rating: product.rating,
     reviews: product.reviews,
-    image: product.image ?? gallery[0] ?? FALLBACK_IMAGE,
-    gallery: gallery.length ? gallery : [FALLBACK_IMAGE],
+    image: primaryImage,
+    gallery: gallery.length ? gallery : [primaryImage],
     description: product.description ?? "",
     isNew: product.isNew,
     featured: product.isBestSeller,

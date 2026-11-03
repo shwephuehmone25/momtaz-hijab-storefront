@@ -83,4 +83,49 @@ describe("product service", () => {
     expect(get).toHaveBeenCalledWith("/api/v1/products/42", undefined);
     expect(product.name).toBe("Everyday Hijab");
   });
+
+  it("uses backend product images in sort order", async () => {
+    const productWithImages: PublicProduct = {
+      ...apiProduct,
+      image: "https://cdn.example.com/legacy-featured.jpg",
+      gallery: ["https://cdn.example.com/legacy-gallery.jpg"],
+      images: [
+        {
+          id: 2,
+          imageUrl: "https://cdn.example.com/second.jpg",
+          sortOrder: 1,
+        },
+        {
+          id: 1,
+          imageUrl: "https://cdn.example.com/first.jpg",
+          sortOrder: 0,
+        },
+      ],
+    };
+    vi.spyOn(apiClient, "get").mockResolvedValueOnce(productWithImages);
+
+    const product = await getProductById(42);
+
+    expect(product.image).toBe("https://cdn.example.com/first.jpg");
+    expect(product.gallery).toEqual([
+      "https://cdn.example.com/first.jpg",
+      "https://cdn.example.com/second.jpg",
+    ]);
+  });
+
+  it("supports legacy product image fields when images are empty", async () => {
+    vi.spyOn(apiClient, "get").mockResolvedValueOnce({
+      ...apiProduct,
+      image: "https://cdn.example.com/legacy-featured.jpg",
+      gallery: ["https://cdn.example.com/legacy-gallery.jpg"],
+      images: [],
+    });
+
+    const product = await getProductById(42);
+
+    expect(product.image).toBe("https://cdn.example.com/legacy-gallery.jpg");
+    expect(product.gallery).toEqual([
+      "https://cdn.example.com/legacy-gallery.jpg",
+    ]);
+  });
 });
