@@ -20,6 +20,14 @@ const labels: Record<string, string> = {
   "prayer-hijab": "Prayer Hijab",
   "kid-hijab": "Kid Hijab",
 };
+
+function belongsToCollection(product: Product, collectionSlug: string) {
+  return (
+    categorySlug(product.category) === collectionSlug ||
+    categorySlug(product.name) === collectionSlug
+  );
+}
+
 export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
   const { products, loading, error, retry } = useProducts();
   const { category } = useParams();
@@ -36,7 +44,7 @@ export function CatalogPage({ newOnly = false }: { newOnly?: boolean }) {
     const x = products.filter(
       (p) =>
         (!newOnly || products.indexOf(p) < 8) &&
-        (!category || categorySlug(p.category) === category) &&
+        (!category || belongsToCollection(p, category)) &&
         (!term ||
           `${p.name} ${p.category}`.toLowerCase().includes(term.toLowerCase())),
     );
@@ -460,8 +468,8 @@ function CollectionCatalogPage({
   const [filter, setFilter] = useState("All");
   const [page, setPage] = useState(1);
   const collectionProducts = useMemo(() => {
-    const categoryItems = products.filter(
-      (product) => categorySlug(product.category) === collection.slug,
+    const categoryItems = products.filter((product) =>
+      belongsToCollection(product, collection.slug),
     );
     const filtered =
       filter === "All"

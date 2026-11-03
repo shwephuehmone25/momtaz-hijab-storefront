@@ -38,34 +38,45 @@ export interface PublicProductVariant {
   size: string | null;
   price: string;
   compareAtPrice: string | null;
+  name: string;
+  stock: number;
   availableQuantity: number;
   inStock: boolean;
 }
 
-export interface PublicProduct {
+export interface PublicProductCategory {
   id: number;
-  categoryId: number;
+  parentId: number | null;
   name: string;
   description: string | null;
+  imageUrl: string | null;
+}
+
+export interface PublicProduct {
+  id: number;
+  slug: string;
+  categoryId: number;
+  category: string;
+  categoryDetails: PublicProductCategory;
+  name: string;
+  description: string | null;
+  price: number;
+  originalPrice: number | null;
+  image: string | null;
+  gallery: string[];
+  rating: number;
+  reviews: number;
+  isNew: boolean;
+  isBestSeller: boolean;
+  bestSellerOrder: number | null;
+  availableQuantity: number;
+  inStock: boolean;
   images: PublicProductImage[];
   variants: PublicProductVariant[];
 }
 
 export interface PublicProductsResponse {
   items: PublicProduct[];
-  page: number;
-  limit: number;
-  total: number;
-}
-
-export interface PublicCategory {
-  id: number;
-  parentId: number | null;
-  name: string;
-}
-
-export interface PublicCategoriesResponse {
-  items: PublicCategory[];
   page: number;
   limit: number;
   total: number;

@@ -6,6 +6,7 @@ import {
   Minus,
   Plus,
   ShieldCheck,
+  Star,
   Truck,
 } from "lucide-react";
 import { useState } from "react";
@@ -66,10 +67,18 @@ export function ProductDetailPage() {
   const addMany = () => {
     for (let i = 0; i < current.qty; i++) add(p, current.variant);
   };
+  const displayName = p.name
+    .toLowerCase()
+    .includes(p.category.toLowerCase())
+    ? p.name
+    : `${p.category} ${p.name}`;
+  const description =
+    p.description ||
+    `A lightweight ${displayName.toLowerCase()} with an elegant, softly textured finish.`;
   return (
     <section className="container page-space">
       <div className="breadcrumbs">
-        <Link to="/">Home</Link> / <Link to="/shop">Shop</Link> / {p.name}
+        <Link to="/">Home</Link> / <Link to="/shop">Shop</Link> / {displayName}
       </div>
       <div className="product-detail">
         <div className="gallery">
@@ -85,22 +94,23 @@ export function ProductDetailPage() {
             ))}
           </div>
           <div className="main-photo">
-            <img src={current.photo} alt={p.name} />
+            <img src={current.photo} alt={displayName} />
           </div>
         </div>
         <div className="details">
           <span className="eyebrow">{p.category}</span>
-          <h1>{p.name}</h1>
+          <h1>{displayName}</h1>
           {p.reviews > 0 && (
             <p className="rating">
-              ★ {p.rating} <span>({p.reviews} reviews)</span>
+              <Star aria-hidden="true" fill="currentColor" />
+              <b>{p.rating}</b> <span>({p.reviews} reviews)</span>
             </p>
           )}
           <p className="detail-price">
             ${p.price.toFixed(2)}{" "}
             {p.originalPrice && <del>${p.originalPrice.toFixed(2)}</del>}
           </p>
-          <p className="description">{p.description}</p>
+          <p className="description">{description}</p>
           <fieldset>
             <legend>
               Color:{" "}
